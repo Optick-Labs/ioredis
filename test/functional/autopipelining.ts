@@ -18,6 +18,16 @@ describe("autoPipelining for single node", () => {
     expect(redis.autoPipelineQueueSize).to.eql(0);
   });
 
+  it("should support call commands", async () => {
+    const redis = new Redis({ enableAutoPipelining: true });
+
+    const promise = await redis.call("ping", "pong");
+
+    const res = await promise;
+    expect(res).to.eql("pong");
+    expect(redis.autoPipelineQueueSize).to.eql(0);
+  });
+
   it("should not add non-compatible commands to auto pipelines", async () => {
     const redis = new Redis({ enableAutoPipelining: true });
 

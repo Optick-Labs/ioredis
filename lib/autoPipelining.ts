@@ -185,7 +185,10 @@ export function executeWithAutoPipelining(
       resolve(value);
     });
 
-    pipeline[functionName](...args);
+    if(functionName === "call")
+      pipeline[functionName](commandName, ...args);
+    else 
+      pipeline[functionName](...args);
   });
 
   return asCallback(autoPipelinePromise, callback);
